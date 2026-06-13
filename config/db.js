@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
+import dns from "dns";
 
+// Forzar DNS de Google para resolver registros SRV de MongoDB Atlas
+// (soluciona ECONNREFUSED en ciertos entornos de red)
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const conectarDB = async () => {
     try {
