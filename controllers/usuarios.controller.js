@@ -134,6 +134,11 @@ const procesarLoginVista = async (req, res) => {
             return res.render("usuarios/login", { error: "El usuario no tiene una contraseña configurada", hideHomeLink: true });
         }
 
+        // Verificar que el usuario esté activo
+        if (usuarioEncontrado.estado !== "Activo") {
+            return res.render("usuarios/login", { error: "Tu cuenta se encuentra inactiva. Contactá al administrador.", hideHomeLink: true });
+        }
+
         // 2. Comparamos contraseñas con bcrypt
         const passwordValida = await bcrypt.compare(password, usuarioEncontrado.password);
         if (!passwordValida) {
@@ -185,6 +190,11 @@ const loginUsuario = async (req, res) => {
         }
         if (!usuarioEncontrado.password) {
             return res.status(409).json({ error: "El usuario no tiene una contraseña configurada" });
+        }
+
+        // Verificar que el usuario esté activo
+        if (usuarioEncontrado.estado !== "Activo") {
+            return res.status(403).json({ error: "Tu cuenta se encuentra inactiva. Contactá al administrador." });
         }
 
         // 3. Comparamos la contraseña en texto plano con el hash guardado usando bcrypt.compare()

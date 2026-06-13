@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+  .card.col-12
+    .card-header
+      div
+        h1 Detalle de Envío
+        p.muted ID: #{envio._id}
+      .actions
+        a.btn.btn-ghost(href="/logistica/vista") Volver al listado
+        a.btn.btn-ghost(href="/") Volver al Panel
+
+    .form-grid
+      .field
+        label Transacción Asociada
+        p(style="margin: 0;")= envio.transaccion_id
+
+      .field
+        label Empresa de Transporte
+        p(style="margin: 0; font-weight: 600;")= envio.empresa_transporte
+
+      .field
+        label Dirección de Destino
+        p(style="margin: 0;")= envio.direccion_destino
+
+      .field
+        label Estado del Envío
+        div
+          - const estadoEnvio = (envio.estado_envio ?? "").toString()
+          - const estadoLower = estadoEnvio.toLowerCase()
+          if estadoLower.includes("entregado")
+            span.badge.badge-success= estadoEnvio
+          else if estadoLower.includes("cancelado")
+            span.badge.badge-danger= estadoEnvio
+          else if estadoLower.includes("tránsito") || estadoLower.includes("transito")
+            span.badge(style="background: rgba(59, 130, 246, .12); color: #1e40af; border-color: rgba(59, 130, 246, .22);")= estadoEnvio
+          else
+            span.badge= estadoEnvio
+
+      .field
+        label Fecha de Creación
+        p.muted(style="margin: 0;")= envio.createdAt ? new Date(envio.createdAt).toLocaleString('es-AR') : 'N/A'
+
+      .field
+        label Última Actualización
+        p.muted(style="margin: 0;")= envio.updatedAt ? new Date(envio.updatedAt).toLocaleString('es-AR') : 'N/A'

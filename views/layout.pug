@@ -548,13 +548,38 @@ html(lang="es")
         border-top: 1px solid var(--border);
       }
 
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .footer-dev {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .footer-dev img {
+        border-radius: 8px;
+        opacity: .9;
+        transition: opacity .2s;
+      }
+
+      .footer-dev img:hover {
+        opacity: 1;
+      }
+
 body
     header.site-header
       .container
         .site-header-inner
           a.brand(href="/")
           
-            img(src='/logodev.jpeg', alt='Logo DeveloPET Friendly', width='150')
             span.brand-badge TR
             span TechRetail Solutions
           nav.nav
@@ -574,4 +599,9 @@ body
         block content
     footer.footer
       .container
-        span TechRetail Solutions — Panel de administración
+        .footer-inner
+          span TechRetail Solutions — Panel de administración
+          .footer-dev
+            span Desarrollado por
+            img(src='/logodev.jpeg', alt='Logo DeveloPET Friendly', height='70')
+

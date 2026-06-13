@@ -7,6 +7,7 @@ block content
         h1 Sucursales (Tiendas)
         p.muted Listado de tiendas virtuales registradas en TechRetail.
       .actions
+        a.btn.btn-primary(href="/tiendas/nuevo") Nueva tienda
         a.btn.btn-ghost(href="/") Volver al Panel
 
     table
@@ -17,18 +18,22 @@ block content
           th Comercio
           th Ubicación
           th Estado
+          th Acciones
       tbody
         each tienda in tiendas
           tr
-            td= tienda._id
+            td
+              a(href=`/tiendas/vista/${tienda._id}` style="color: var(--primary); text-decoration: none; font-weight: 600;")= tienda._id
             td= tienda.nombre_sucursal
-            td= tienda.comercio_id.nombre_comercio
+            td= tienda.comercio_id ? tienda.comercio_id.nombre_comercio : 'Comercio no disponible'
             td= tienda.ubicacion
             td
               if tienda.estado === "Activo" || tienda.estado === "Activa"
                 span.status-dot.status-dot--active(title=tienda.estado)
               else
                 span.status-dot.status-dot--inactive(title=tienda.estado)
+            td
+              a.btn.btn-ghost(href=`/tiendas/vista/${tienda._id}` style="padding: 6px 10px; font-size: 13px;") Ver detalle
         else
           tr
-            td(colspan="5") No hay tiendas registradas en este momento.
+            td(colspan="6") No hay tiendas registradas en este momento.

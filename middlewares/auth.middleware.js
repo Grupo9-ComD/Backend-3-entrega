@@ -12,9 +12,18 @@ const verificarToken = (req, res, next) => {
         }
     }
 
-    // 3. Si definitivamente no hay token en ningún lado, lo mandamos al login
+    // Detectar si la petición viene de una API o de una vista web
+    const esApiRequest = req.header("Authorization") || 
+                         (req.header("Accept") && req.header("Accept").includes("application/json")) ||
+                         req.header("Content-Type") === "application/json";
+
+    // 3. Si definitivamente no hay token en ningún lado
     if (!token) {
-        // Redirigimos a la vista de login en lugar de devolver un JSON de error
+        if (esApiRequest) {
+            // Para clientes API: devolver 401 JSON en vez de redirigir
+            return res.status(401).json({ error: "Acceso denegado. No se proporcionó un token de autenticación." });
+        }
+        // Para vistas web: redirigir al login
         return res.redirect("/usuarios/login-vista");
     }
 
@@ -23,10 +32,14 @@ const verificarToken = (req, res, next) => {
         const verificado = jwt.verify(token, process.env.JWT_SECRET);
         req.usuario = verificado;
         
-        // 5. Dejamos que pase a la vista
+        // 5. Dejamos que pase a la ruta correspondiente
         next(); 
     } catch (error) {
-        // Si el token es falso o expiró (pasaron las 2 horas), vuelve al login
+        if (esApiRequest) {
+            // Token inválido/expirado para API → 401 JSON
+            return res.status(401).json({ error: "Token inválido o expirado. Volvé a iniciar sesión." });
+        }
+        // Token inválido/expirado para vista → redirigir al login
         res.redirect("/usuarios/login-vista");
     }
 };

@@ -41,14 +41,21 @@ const buildObservacionAutomatica = ({
 const determinarEstadoConciliacion = ({
     montoTotal,
     montoInformadoPasarela,
-    estadoConciliacionForzado
+    estadoConciliacionForzado,
+    estadoActual
 }) => {
     if (estadoConciliacionForzado) {
         return estadoConciliacionForzado;
     }
 
+    // Proteger el estado "Anulada": no se debe sobrescribir al recalcular
+    if (estadoActual === "Anulada") {
+        return "Anulada";
+    }
+
     if (montoInformadoPasarela !== undefined && montoInformadoPasarela !== null) {
-        return Number(montoTotal) === Number(montoInformadoPasarela)
+        // Usar toFixed(2) para evitar problemas de precisión con punto flotante
+        return Number(montoTotal).toFixed(2) === Number(montoInformadoPasarela).toFixed(2)
             ? "Conciliado OK"
             : "Con Diferencias";
     }
@@ -62,9 +69,19 @@ const obtenerTiendaYComercio = async (tiendaId) => {
         return { error: "La tienda indicada no existe." };
     }
 
+    // Validar que la tienda esté activa antes de operar
+    if (tienda.estado !== "Activo") {
+        return { error: "La tienda indicada se encuentra inactiva." };
+    }
+
     const comercio = await Comercio.findById(tienda.comercio_id);
     if (!comercio) {
         return { error: "El comercio asociado no existe." };
+    }
+
+    // Validar que el comercio esté activo antes de operar
+    if (comercio.estado !== "Activo") {
+        return { error: "El comercio asociado se encuentra inactivo." };
     }
 
     return { tienda, comercio };
@@ -78,14 +95,16 @@ const construirPayloadTransaccion = ({
     estadoPago = "Aprobado",
     solicitudCancelacion = false,
     observacion = "",
-    estadoConciliacionForzado
+    estadoConciliacionForzado,
+    estadoActual
 }) => {
     const comisionCalculada = Number(montoTotal) * comercio.comision_variable;
     const ingresoCalculado = Number(montoTotal) - comisionCalculada;
     const estadoConciliacion = determinarEstadoConciliacion({
         montoTotal,
         montoInformadoPasarela,
-        estadoConciliacionForzado
+        estadoConciliacionForzado,
+        estadoActual
     });
     const observacionFinal = buildObservacionAutomatica({
         observacion,
@@ -242,7 +261,8 @@ const actualizarTransaccionInterna = async (id, body) => {
         estadoPago: body.estado_pago ?? transaccionActual.estado_pago ?? "Aprobado",
         solicitudCancelacion: body.solicitud_cancelacion ?? transaccionActual.solicitud_cancelacion ?? false,
         observacion: body.observacion ?? transaccionActual.observacion,
-        estadoConciliacionForzado: body.estado_conciliacion
+        estadoConciliacionForzado: body.estado_conciliacion,
+        estadoActual: transaccionActual.estado_conciliacion
     });
 
     Object.assign(transaccionActual, payload);

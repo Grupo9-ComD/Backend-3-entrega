@@ -108,6 +108,17 @@ const obtenerTiendaVista = async (req, res) => {
 
 const crearTiendaVista = async (req, res) => {
    try {
+      // Validar que el comercio exista (mismo control que la API)
+      const comercioExistente = await Comercio.findById(req.body.comercio_id);
+      if (!comercioExistente) {
+          return res.status(404).send("El comercio indicado no existe.");
+      }
+
+      // Validar que el comercio esté activo
+      if (comercioExistente.estado !== "Activo") {
+          return res.status(400).send("El comercio indicado se encuentra inactivo.");
+      }
+
       const nuevaTienda = new Tienda(req.body);
 
       await nuevaTienda.save();
@@ -115,7 +126,8 @@ const crearTiendaVista = async (req, res) => {
       res.redirect("/tiendas/vista");
 
    } catch (error) {
-      res.status(400).send("Error...");
+      console.error(error);
+      res.status(400).send("Error al crear la tienda. Verificá los datos.");
    }
 };
 

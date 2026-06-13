@@ -3,8 +3,12 @@ extends ../layout
 block content
   .card.col-12
     .card-header
-      h1 Envíos Logísticos
-      a.btn.btn-ghost(href="/") Volver al Panel
+      div
+        h1 Envíos Logísticos
+        p.muted Envíos vinculados con el flujo de ventas y despacho.
+      .actions
+        a.btn.btn-primary(href="/logistica/nuevo") Crear envío
+        a.btn.btn-ghost(href="/") Volver al Panel
     table
       thead
         tr
@@ -13,14 +17,28 @@ block content
           th Empresa Transporte
           th Destino
           th Estado
+          th Acciones
       tbody
-        //- Cambiamos "logistica" por "envios"
         each envio in envios
           tr
-            td= envio._id
-            //- Cambiamos "id_transaccion" por "transaccion_id"
+            td
+              a(href=`/logistica/vista/${envio._id}` style="color: var(--primary); text-decoration: none; font-weight: 600;")= envio._id
             td= envio.transaccion_id
             td= envio.empresa_transporte
             td= envio.direccion_destino
-            //- Agregamos la columna de estado
-            td= envio.estado_envio
+            td
+              - const estadoEnvio = (envio.estado_envio ?? "").toString()
+              - const estadoLower = estadoEnvio.toLowerCase()
+              if estadoLower.includes("entregado")
+                span.badge.badge-success= estadoEnvio
+              else if estadoLower.includes("cancelado")
+                span.badge.badge-danger= estadoEnvio
+              else if estadoLower.includes("tránsito") || estadoLower.includes("transito")
+                span.badge(style="background: rgba(59, 130, 246, .12); color: #1e40af; border-color: rgba(59, 130, 246, .22);")= estadoEnvio
+              else
+                span.badge= estadoEnvio
+            td
+              a.btn.btn-ghost(href=`/logistica/vista/${envio._id}` style="padding: 6px 10px; font-size: 13px;") Ver detalle
+        else
+          tr
+            td(colspan="6") No hay envíos registrados en este momento.

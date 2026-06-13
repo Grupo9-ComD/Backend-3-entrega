@@ -45,6 +45,11 @@ const crearEnvio = async (req, res) => {
             return res.status(400).json({ error: "No se puede crear un envío para una transacción anulada." });
         }
 
+        // Validar que el pago esté aprobado antes de despachar
+        if (transaccionAsociada.estado_pago !== "Aprobado") {
+            return res.status(400).json({ error: `No se puede crear un envío para una transacción con estado de pago "${transaccionAsociada.estado_pago}". Solo se despachan transacciones aprobadas.` });
+        }
+
         // Si todo está bien, creamos el nuevo envío
         const nuevoEnvio = new Logistica({
             transaccion_id: transaccionAsociada._id,
@@ -56,7 +61,7 @@ const crearEnvio = async (req, res) => {
         await nuevoEnvio.save();
         res.status(201).json(nuevoEnvio);
     } catch (error) {
-        console.log(error); // Para debug en consola
+        console.error(error); // Para debug en consola
         res.status(400).json({ error: "Error al crear el envío. Verificá los datos." });
     }
 };
@@ -135,14 +140,37 @@ const formularioNuevoEnvio = async (req, res) => {
 
 const crearEnvioVista = async (req, res) => {
    try {
-      const nuevoEnvio = new Logistica(req.body);
+      const { transaccion_id, empresa_transporte, direccion_destino } = req.body;
+
+      // Validar que la transacción exista (mismo control que la API)
+      const transaccionAsociada = await Transaccion.findById(transaccion_id);
+      if (!transaccionAsociada) {
+          return res.status(404).send("La transacción indicada no existe.");
+      }
+
+      // Validar que no esté anulada
+      if (transaccionAsociada.estado_conciliacion === "Anulada") {
+          return res.status(400).send("No se puede crear un envío para una transacción anulada.");
+      }
+
+      // Validar que el pago esté aprobado
+      if (transaccionAsociada.estado_pago !== "Aprobado") {
+          return res.status(400).send(`No se puede despachar una transacción con estado de pago "${transaccionAsociada.estado_pago}".`);
+      }
+
+      const nuevoEnvio = new Logistica({
+          transaccion_id: transaccionAsociada._id,
+          empresa_transporte,
+          direccion_destino
+      });
 
       await nuevoEnvio.save();
 
       res.redirect("/logistica/vista");
 
    } catch (error) {
-      res.status(400).send("Error...");
+      console.error(error);
+      res.status(400).send("Error al crear el envío. Verificá los datos.");
    }
 };
 

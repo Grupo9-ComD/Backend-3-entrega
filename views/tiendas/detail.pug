@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  .card.col-12
+    .card-header
+      div
+        h1 Detalle de Tienda
+        p.muted ID: #{tienda._id}
+      .actions
+        a.btn.btn-ghost(href="/tiendas/vista") Volver al listado
+        a.btn.btn-ghost(href="/") Volver al Panel
+
+    .form-grid
+      .field
+        label Nombre de Sucursal
+        p(style="margin: 0; font-size: 18px; font-weight: 700;")= tienda.nombre_sucursal
+
+      .field
+        label Estado
+        div
+          if tienda.estado === "Activo" || tienda.estado === "Activa"
+            span.badge.badge-success= tienda.estado
+          else
+            span.badge.badge-danger= tienda.estado
+
+      .field
+        label Ubicación
+        p(style="margin: 0;")= tienda.ubicacion || 'Sin ubicación registrada'
+
+      .field
+        label Comercio Asociado (ID)
+        p.muted(style="margin: 0;")= tienda.comercio_id
+
+      .field
+        label Fecha de Creación
+        p.muted(style="margin: 0;")= tienda.createdAt ? new Date(tienda.createdAt).toLocaleString('es-AR') : 'N/A'
+
+      .field
+        label Última Actualización
+        p.muted(style="margin: 0;")= tienda.updatedAt ? new Date(tienda.updatedAt).toLocaleString('es-AR') : 'N/A'

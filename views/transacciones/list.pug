@@ -3,8 +3,12 @@ extends ../layout
 block content
   .card.col-12
     .card-header
-      h1 Transacciones
-      a.btn.btn-ghost(href="/") Volver al Panel
+      div
+        h1 Transacciones
+        p.muted Ventas, conciliación y comisiones de la plataforma.
+      .actions
+        a.btn.btn-primary(href="/transacciones/nuevo") Procesar venta
+        a.btn.btn-ghost(href="/") Volver al Panel
     table
       thead
         tr
@@ -19,8 +23,9 @@ block content
       tbody
         each transaccion in transacciones
           tr
-            //- Cambiamos .id por ._id
-            td= transaccion._id
+            //- ID ahora es un enlace clickeable al detalle
+            td
+              a(href=`/transacciones/vista/${transaccion._id}` style="color: var(--primary); text-decoration: none; font-weight: 600;")= transaccion._id
             //- Cambiamos .id_tienda por .tienda_id
             td
               if transaccion.tienda_id && transaccion.tienda_id.nombre_sucursal
@@ -55,3 +60,6 @@ block content
               else
                 span.badge No
             td.small= transaccion.observacion
+        else
+          tr
+            td(colspan="8") No hay transacciones registradas en este momento.

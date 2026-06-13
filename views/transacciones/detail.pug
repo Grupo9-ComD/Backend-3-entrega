@@ -1,0 +1,78 @@
+extends ../layout
+
+block content
+  .card.col-12
+    .card-header
+      div
+        h1 Detalle de Transacción
+        p.muted ID: #{transaccion._id}
+      .actions
+        a.btn.btn-ghost(href="/transacciones/vista") Volver al listado
+        a.btn.btn-ghost(href="/") Volver al Panel
+
+    .form-grid
+      .field
+        label Estado de Pago
+        div
+          - const estadoPago = (transaccion.estado_pago ?? "").toString()
+          - const estadoPagoLower = estadoPago.toLowerCase()
+          if estadoPagoLower.includes("aprob")
+            span.badge.badge-success= estadoPago
+          else if estadoPagoLower.includes("rech")
+            span.badge.badge-danger= estadoPago
+          else
+            span.badge= estadoPago
+
+      .field
+        label Estado de Conciliación
+        div
+          - const estado = (transaccion.estado_conciliacion ?? "").toString()
+          - const estadoLower = estado.toLowerCase()
+          if estadoLower.includes("ok")
+            span.badge.badge-success= estado
+          else if estadoLower.includes("difer")
+            span.badge.badge-danger= estado
+          else if estadoLower.includes("anulad")
+            span.badge(style="background: #fee2e2; color: #b91c1c;")= estado
+          else
+            span.badge= estado
+
+      .field
+        label Monto Total
+        p(style="font-size: 22px; font-weight: 700; margin: 0;") $#{transaccion.monto_total}
+
+      .field
+        label Monto Informado Pasarela
+        p(style="font-size: 22px; font-weight: 700; margin: 0;") $#{transaccion.monto_informado_pasarela}
+
+      .field
+        label Comisión TechRetail
+        p(style="margin: 0;") $#{transaccion.split_pagos ? transaccion.split_pagos.comision_techretail : 'N/A'}
+
+      .field
+        label Ingreso Comercio
+        p(style="margin: 0;") $#{transaccion.split_pagos ? transaccion.split_pagos.ingreso_comercio : 'N/A'}
+
+      .field
+        label Solicitud de Cancelación
+        div
+          if transaccion.solicitud_cancelacion
+            span.badge(style="background: #fef3c7; color: #b45309;") Solicitada
+          else
+            span.badge No
+
+      .field
+        label Tienda ID
+        p.muted(style="margin: 0;")= transaccion.tienda_id
+
+      .field.field-full
+        label Observación
+        p(style="margin: 0;")= transaccion.observacion || 'Sin observaciones'
+
+      .field
+        label Fecha de Creación
+        p.muted(style="margin: 0;")= transaccion.createdAt ? new Date(transaccion.createdAt).toLocaleString('es-AR') : 'N/A'
+
+      .field
+        label Última Actualización
+        p.muted(style="margin: 0;")= transaccion.updatedAt ? new Date(transaccion.updatedAt).toLocaleString('es-AR') : 'N/A'
