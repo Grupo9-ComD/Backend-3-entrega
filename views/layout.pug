@@ -876,6 +876,85 @@ html(lang="es")
         color: var(--muted);
       }
 
+      .chat-fab {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 65px;
+        height: 65px;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(0,0,0,.2);
+        z-index: 9999;
+      }
+
+      .chat-widget {
+        position: fixed;
+        bottom: 100px;
+        right: 25px;
+
+        width: 340px;
+        height: 450px;
+
+        background: white;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+
+        box-shadow: 0 15px 40px rgba(0,0,0,.2);
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+        z-index: 9999;
+      }
+
+      .chat-hidden {
+        display: none;
+      }
+
+      .chat-header {
+        padding: 15px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: white;
+        font-weight: 700;
+      }
+
+      #messages {
+        flex: 1;
+        overflow-y: auto;
+        list-style: none;
+        margin: 0;
+        padding: 15px;
+      }
+
+      #messages li {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        background: rgba(13, 71, 161, .06);
+      }
+
+      #chatForm {
+        display: flex;
+        gap: 10px;
+        padding: 15px;
+        border-top: 1px solid var(--border);
+      }
+
+      #messageInput {
+        flex: 1;
+      }
+
+      #chatForm button {
+        padding: 10px 15px;
+      }
+
+      
       .footer {
         padding: 22px 0 26px;
         color: var(--muted);
@@ -932,6 +1011,26 @@ body
       .container
 
         block content
+    if usuario
+      button#chatToggle.chat-fab 💬
+
+      .chat-widget.chat-hidden#chatWidget
+        .chat-header
+          | Chat General
+
+        ul#messages
+
+        form#chatForm
+          input(
+            type="text"
+            id="messageInput"
+            placeholder="Escribí un mensaje..."
+            required
+         )
+
+          button.btn.btn-primary(type="submit")
+            | Enviar
+    
     footer.footer
       .container
         .footer-inner
@@ -939,4 +1038,8 @@ body
           .footer-dev
             span Desarrollado por
             img(src='/logodev.jpeg', alt='Logo DeveloPET Friendly', height='70')
+
+    if usuario
+      script(src="/socket.io/socket.io.js")
+      script(src="/js/chat.js")
 

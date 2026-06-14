@@ -1,13 +1,95 @@
 import express from "express";
 import conectarDB from "./config/db.js";
-import 'dotenv/config'; 
-import jwt from "jsonwebtoken"; 
+import 'dotenv/config';
+import jwt from "jsonwebtoken";
+import http from "http";
+import { Server } from "socket.io";
+import Mensaje from "./models/message.model.js";
+
 
 // 1. Agregamos las importaciones para manejar rutas absolutas en ES Modules
 import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.use((socket, next) => {
+    try {
+
+        const cookies = socket.handshake.headers.cookie;
+
+        if (!cookies) {
+            return next(new Error("No autenticado"));
+        }
+
+        const token = cookies
+            .split(";")
+            .find(c => c.trim().startsWith("jwt_token="))
+            ?.split("=")[1];
+
+        if (!token) {
+            return next(new Error("No autenticado"));
+        }
+
+        const usuario = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
+
+        socket.usuario = usuario;
+
+        next();
+
+    } catch (error) {
+        next(new Error("Token inválido"));
+    }
+});
+
+io.on("connection", (socket) => {
+
+    console.log(
+        `${socket.usuario.nombre} conectado`
+    );
+
+    socket.on("send_message", async (mensaje) => {
+
+        try {
+
+            const nuevoMensaje = await Mensaje.create({
+                usuarioId: socket.usuario.id,
+                nombre: socket.usuario.nombre,
+                contenido: mensaje
+            });
+
+            io.emit("new_message", {
+                usuario: nuevoMensaje.nombre,
+                contenido: nuevoMensaje.contenido
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Error al guardar el mensaje:",
+                error
+            );
+
+        }
+
+    });
+
+    socket.on("disconnect", () => {
+
+        console.log(
+            `${socket.usuario.nombre} desconectado`
+        );
+
+    });
+
+});
+
+
 
 // 2. Recreamos la variable __dirname para que funcione con import/export
 const __filename = fileURLToPath(import.meta.url);
@@ -27,6 +109,7 @@ import Comercio from "./models/comercio.model.js";
 import Tienda from "./models/tienda.model.js";
 import Transaccion from "./models/transaccion.model.js";
 import Alerta from "./models/alerta.model.js";
+import chatRoutes from "./routes/chat.routes.js";
 
 // MIDDLEWARES INCORPORADOS
 app.use(express.json());
@@ -198,6 +281,7 @@ app.use("/logistica", logisticaRoutes);
 app.use("/usuarios", usuariosRoutes);
 app.use("/alertas", alertasRoutes);
 app.use("/tests", testsRoutes);
+app.use("/chat", chatRoutes);
 
 // MIDDLEWARE PERSONALIZADO 2: Manejo de Error 404 sin rutas
 app.use((req, res, next) => {
@@ -208,6 +292,6 @@ app.use((req, res, next) => {
 //const PORT = 8000;
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
