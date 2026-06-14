@@ -891,7 +891,6 @@ html(lang="es")
         box-shadow: 0 10px 25px rgba(0,0,0,.2);
         z-index: 9999;
       }
-
       .chat-widget {
         position: fixed;
         bottom: 100px;
@@ -900,18 +899,25 @@ html(lang="es")
         width: 340px;
         height: 450px;
 
-        background: white;
-        border-radius: 18px;
-        border: 1px solid var(--border);
-
-        box-shadow: 0 15px 40px rgba(0,0,0,.2);
-
         display: flex;
         flex-direction: column;
 
+        background: white;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        box-shadow: 0 15px 40px rgba(0,0,0,.2);
+
         overflow: hidden;
-        z-index: 9999;
       }
+
+      #messages {
+        flex: 1;
+        min-height: 0;      /* 🔥 ESTE ES EL FIX IMPORTANTE */
+        overflow-y: auto;
+        padding: 15px;
+        margin: 0;
+      }
+      
 
       .chat-hidden {
         display: none;
@@ -930,6 +936,7 @@ html(lang="es")
         list-style: none;
         margin: 0;
         padding: 15px;
+        min-height: 0;
       }
 
       #messages li {
@@ -937,7 +944,31 @@ html(lang="es")
         padding: 10px;
         border-radius: 10px;
         background: rgba(13, 71, 161, .06);
+        display: flex;
+        flex-direction: column; /* Organiza la estructura del globo */
+        gap: 4px;
       }
+      .chat-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        color: var(--muted);
+      }
+       .chat-user {
+        font-weight: 700;
+        color: var(--primary);
+      }
+      .chat-time {
+        font-size: 10px;
+        color: #9ca3af; /* Gris claro */
+      }
+      .chat-text {
+        font-size: 13px;
+        word-break: break-word;
+        color: var(--text);
+      }
+
 
       #chatForm {
         display: flex;
@@ -1040,6 +1071,6 @@ body
             img(src='/logodev.jpeg', alt='Logo DeveloPET Friendly', height='70')
 
     if usuario
-      script(src="/socket.io/socket.io.js")
-      script(src="/js/chat.js")
+     script(src="/socket.io/socket.io.js")
+     script(src="/js/chat.js")
 
