@@ -24,10 +24,8 @@ const isValidEmail = (value) =>
 
 const isValidObjectIdString = (value) => typeof value === "string" && /^[a-fA-F0-9]{24}$/.test(value);
 
-const cuitDigitsLength = (value) => {
-    const digits = String(value ?? "").replace(/\D/g, "");
-    return digits.length;
-};
+const isValidCuit = (value) => /^\d{2}-\d{8}-\d{1}$/.test(value);
+
 
 const validateIdParam = (req, res, next) => {
     if (!isValidObjectIdString(req.params.id)) {
@@ -42,8 +40,8 @@ const validateComercioCreate = (req, res, next) => {
     if (!isNonEmptyString(req.body.nombre_comercio)) {
         errors.push({ field: "nombre_comercio", message: "nombre_comercio es obligatorio." });
     }
-    if (!isNonEmptyString(req.body.cuit) || cuitDigitsLength(req.body.cuit) !== 11) {
-        errors.push({ field: "cuit", message: "cuit es obligatorio y debe tener 11 dígitos." });
+    if (!isValidCuit(req.body.cuit)) {
+        errors.push({ field: "cuit", message: "El CUIT debe tener el formato XX-XXXXXXXX-X (ej: 27-37143301-0)" });
     }
     if (!isValidEmail(req.body.email_contacto)) {
         errors.push({ field: "email_contacto", message: "email_contacto debe ser un email válido." });
@@ -71,8 +69,8 @@ const validateComercioUpdate = (req, res, next) => {
     if ("nombre_comercio" in req.body && !isNonEmptyString(req.body.nombre_comercio)) {
         errors.push({ field: "nombre_comercio", message: "nombre_comercio no puede estar vacío." });
     }
-    if ("cuit" in req.body && (!isNonEmptyString(req.body.cuit) || cuitDigitsLength(req.body.cuit) !== 11)) {
-        errors.push({ field: "cuit", message: "cuit debe tener 11 dígitos." });
+    if ("cuit" in req.body && !isValidCuit(req.body.cuit)) {
+        errors.push({ field: "cuit", message: "El CUIT debe tener el formato XX-XXXXXXXX-X (ej: 27-37143301-0)" });
     }
     if ("email_contacto" in req.body && !isValidEmail(req.body.email_contacto)) {
         errors.push({ field: "email_contacto", message: "email_contacto debe ser un email válido." });
