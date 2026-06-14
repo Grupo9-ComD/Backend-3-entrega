@@ -21,6 +21,7 @@ El proyecto cuenta con un backend 100% funcional estructurado bajo el **Patrón 
 *   ☁️ **Despliegue en la Nube (Deployment):** La base de datos fue migrada exitosamente a **MongoDB Atlas**. Además, el servidor fue configurado y publicado en la plataforma **Render**, haciendo que la API REST esté accesible de forma pública en internet.
 *   🚨 **Panel de Alertas (Interoperabilidad):** Nuevo dashboard visual interactivo desarrollado en Pug que notifica discrepancias financieras y problemas operativos. Utiliza el método `.populate()` de Mongoose para cruzar y mostrar los montos exactos de las transacciones afectadas.
 *   🧪 **Testing Automatizado:** Se incorporaron pruebas unitarias automatizadas utilizando el motor nativo de Node.js (`node:test` y `node:assert`) para validar la robustez de los middlewares de seguridad y roles (RBAC) aislando componentes (Mocking).
+*   💬 **Chat Interno en Tiempo Real (Socket.io):** Se integró un sistema de mensajería instantánea para la comunicación interna del equipo operativo utilizando WebSockets (`socket.io`). Cuenta con un middleware de autenticación por socket que valida el token JWT, persistencia del historial en MongoDB (esquema con autogeneración de marcas de tiempo), carga optimizada de los últimos 30 mensajes, visualización de fecha/hora formateada y scroll automático inteligente al abrir o recibir mensajes.
 
 ### 📦 Módulos y Funcionalidades (CRUD completo)
 
@@ -30,6 +31,7 @@ El proyecto cuenta con un backend 100% funcional estructurado bajo el **Patrón 
 *   **Usuarios:** Módulo de gestión de personal con contraseñas encriptadas.
 *   **Estadísticas:** Generación de Reporte "Hot Sale" de alto rendimiento que calcula en tiempo real el volumen de ventas y el "Split de pagos".
 *   **Alertas:** Monitoreo visual de la salud financiera del sistema mediante tickets de resolución por prioridades.
+*   **Chat Interno:** Canal de comunicación en tiempo real seguro y exclusivo para personal autenticado, accesible mediante un widget y botón flotante interactivo en todo el panel.
 
 ---
 
