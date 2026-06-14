@@ -40,10 +40,8 @@ const crearUsuario = async (req, res) => {
         // 4. Guardamos el usuario seguro en MongoDB Atlas
         await nuevoUsuario.save();
 
-        // 5. Como estás viniendo desde una vista Pug, probablemente quieras redirigir al listado:
-        res.redirect("/usuarios/vista"); 
-        
-        // (Si estabas usando JSON para devolver una respuesta, usa: res.status(201).json(nuevoUsuario); )
+        // 5. JSON para devolver una respuesta:
+        res.status(201).json(nuevoUsuario);
 
     } catch (error) {
         res.status(400).json({ error: "Error al crear usuario: " + error.message });
