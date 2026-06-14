@@ -116,7 +116,7 @@ const crearUsuarioVista = async (req, res) => {
 
 // GET - Renderiza el formulario de Login
 const mostrarLogin = (req, res) => {
-    res.render("usuarios/login", { hideHomeLink: true });
+    res.render("usuarios/login", { hideHomeLink: true, emailValue: "" });
 };
 
 // POST - Procesa el formulario, valida y guarda la Cookie
@@ -128,10 +128,18 @@ const procesarLoginVista = async (req, res) => {
         // 1. Buscamos el usuario
         const usuarioEncontrado = await Usuario.findOne({ email: emailNormalizado });
         if (!usuarioEncontrado) {
-            return res.render("usuarios/login", { error: "El correo o la clave son incorrectos", hideHomeLink: true });
+            return res.render("usuarios/login", {
+                error: "El correo o la clave son incorrectos",
+                hideHomeLink: true,
+                emailValue: emailNormalizado
+            });
         }
         if (!usuarioEncontrado.password) {
-            return res.render("usuarios/login", { error: "El usuario no tiene una contraseña configurada", hideHomeLink: true });
+            return res.render("usuarios/login", {
+                error: "El usuario no tiene una contraseña configurada",
+                hideHomeLink: true,
+                emailValue: emailNormalizado
+            });
         }
 
         // Verificar que el usuario esté activo
@@ -142,7 +150,11 @@ const procesarLoginVista = async (req, res) => {
         // 2. Comparamos contraseñas con bcrypt
         const passwordValida = await bcrypt.compare(password, usuarioEncontrado.password);
         if (!passwordValida) {
-            return res.render("usuarios/login", { error: "El correo o la clave son incorrectos", hideHomeLink: true });
+            return res.render("usuarios/login", {
+                error: "El correo o la clave son incorrectos",
+                hideHomeLink: true,
+                emailValue: emailNormalizado
+            });
         }
 
         // 3. Generamos el pase VIP (JWT)
@@ -162,7 +174,11 @@ const procesarLoginVista = async (req, res) => {
         res.redirect("/usuarios/vista");
 
     } catch (error) {
-        res.render("usuarios/login", { error: "Ocurrió un error en el servidor", hideHomeLink: true });
+        res.render("usuarios/login", {
+            error: "Ocurrió un error en el servidor",
+            hideHomeLink: true,
+            emailValue: typeof req.body?.email === "string" ? req.body.email.trim().toLowerCase() : ""
+        });
     }
 };
 
