@@ -379,7 +379,7 @@ const obtenerTransaccionVista = async (req, res) => {
 const formularioNuevaTransaccion = async (req, res) => {
     try {
         // Buscamos todas las tiendas en la base de datos de Mongo
-        const tiendas = await Tienda.find().lean();
+        const tiendas = await Tienda.find({ estado: "Activo" }).lean();
         
         // Pasamos la variable "tiendas" a la vista de Pug
         res.render("transacciones/form", { tiendas });
