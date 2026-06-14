@@ -50,6 +50,9 @@ const crearUsuario = async (req, res) => {
 
 const actualizarUsuario = async (req, res) => {
     try {
+        if (req.body.password) {
+            req.body.password = await bcrypt.hash(req.body.password, 10);
+        }
         const usuarioActualizado = await Usuario.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         usuarioActualizado ? res.json(usuarioActualizado) : res.status(404).json({ error: "Usuario no encontrado" });
     } catch (error) {
@@ -100,7 +103,7 @@ const crearUsuarioVista = async (req, res) => {
         await nuevoUsuario.save();
 
         // 5. Redirigimos de vuelta a la vista de la tabla
-        res.redirect("/usuarios/vista"); 
+        res.redirect("/usuarios/vista");
     } catch (error) {
         res.status(400).send("Error al crear usuario desde la vista: " + error.message);
     }
@@ -157,8 +160,8 @@ const procesarLoginVista = async (req, res) => {
 
         // 3. Generamos el pase VIP (JWT)
         const token = jwt.sign(
-            { id: usuarioEncontrado._id, rol: usuarioEncontrado.rol, nombre: usuarioEncontrado.nombre }, 
-            process.env.JWT_SECRET, 
+            { id: usuarioEncontrado._id, rol: usuarioEncontrado.rol, nombre: usuarioEncontrado.nombre },
+            process.env.JWT_SECRET,
             { expiresIn: '2h' }
         );
 
@@ -198,7 +201,7 @@ const loginUsuario = async (req, res) => {
 
         // 2. Buscamos en la base de datos si existe algún usuario con ese email exacto
         const usuarioEncontrado = await Usuario.findOne({ email: emailNormalizado });
-        
+
         if (!usuarioEncontrado) {
             return res.status(404).json({ error: "El usuario no existe en el sistema" });
         }
@@ -219,15 +222,15 @@ const loginUsuario = async (req, res) => {
             return res.status(401).json({ error: "Credenciales incorrectas" }); // Error 401: No autorizado
         }
 
-// --- ¡NUEVO: GENERACIÓN DEL TOKEN JWT! ---
+        // --- ¡NUEVO: GENERACIÓN DEL TOKEN JWT! ---
         // jwt.sign recibe 3 cosas: los datos a guardar (payload), la clave secreta, y el tiempo de expiración
         const token = jwt.sign(
-            { 
-                id: usuarioEncontrado._id, 
+            {
+                id: usuarioEncontrado._id,
                 rol: usuarioEncontrado.rol,
                 nombre: usuarioEncontrado.nombre
-            }, 
-            process.env.JWT_SECRET, 
+            },
+            process.env.JWT_SECRET,
             { expiresIn: '2h' } // El token caducará en 2 horas por seguridad
         );
 
@@ -265,6 +268,6 @@ const logoutApi = (req, res) => {
 
 export {
     obtenerUsuarios, obtenerUsuarioPorId, crearUsuario, actualizarUsuario, eliminarUsuario,
-    obtenerUsuariosVista, formularioNuevoUsuario, crearUsuarioVista,loginUsuario,mostrarLogin,procesarLoginVista,
+    obtenerUsuariosVista, formularioNuevoUsuario, crearUsuarioVista, loginUsuario, mostrarLogin, procesarLoginVista,
     logoutVista, logoutApi
 };
