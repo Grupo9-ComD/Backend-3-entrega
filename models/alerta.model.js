@@ -29,6 +29,8 @@ const alertaSchema = new mongoose.Schema({
         ref: "Transaccion",
         required: false
     }
+}, {
+    timestamps: true
 });
 
 const Alerta = mongoose.model("Alerta", alertaSchema);
