@@ -203,7 +203,7 @@ const loginUsuario = async (req, res) => {
         const usuarioEncontrado = await Usuario.findOne({ email: emailNormalizado });
 
         if (!usuarioEncontrado) {
-            return res.status(404).json({ error: "El usuario no existe en el sistema" });
+            return res.status(401).json({ error: "Credenciales incorrectas" });
         }
         if (!usuarioEncontrado.password) {
             return res.status(409).json({ error: "El usuario no tiene una contraseña configurada" });
