@@ -69,7 +69,6 @@ const obtenerTiendaYComercio = async (tiendaId) => {
         return { error: "La tienda indicada no existe." };
     }
 
-    // Validar que la tienda esté activa antes de operar
     if (tienda.estado !== "Activo") {
         return { error: "La tienda indicada se encuentra inactiva." };
     }
@@ -79,7 +78,6 @@ const obtenerTiendaYComercio = async (tiendaId) => {
         return { error: "El comercio asociado no existe." };
     }
 
-    // Validar que el comercio esté activo antes de operar
     if (comercio.estado !== "Activo") {
         return { error: "El comercio asociado se encuentra inactivo." };
     }
@@ -276,7 +274,7 @@ const actualizarTransaccionInterna = async (id, body) => {
 // RUTAS API CRUD CON MONGODB
 // ==========================================
 
-// GET ALL
+
 const obtenerTransacciones = async (req, res) => {
     try {
         const transacciones = await Transaccion.find();
@@ -286,7 +284,7 @@ const obtenerTransacciones = async (req, res) => {
     }
 };
 
-// GET BY ID
+
 const obtenerTransaccionPorId = async (req, res) => {
     try {
         const transaccion = await Transaccion.findById(req.params.id);
@@ -310,12 +308,12 @@ const crearTransaccion = async (req, res) => {
 
         res.status(201).json(resultado.transaccion);
     } catch (error) {
-        console.log(error); // Para ver detalles en la terminal si algo falla
+        console.log(error);
         res.status(400).json({ error: "Error al crear la transacción. Verificá los datos." });
     }
 };
 
-// UPDATE
+
 const actualizarTransaccion = async (req, res) => {
     try {
         const resultado = await actualizarTransaccionInterna(req.params.id, req.body);
@@ -331,7 +329,7 @@ const actualizarTransaccion = async (req, res) => {
     }
 };
 
-// DELETE (Baja Lógica / Anulación)
+
 const eliminarTransaccion = async (req, res) => {
     try {
         const resultado = await actualizarTransaccionInterna(req.params.id, {
@@ -378,10 +376,8 @@ const obtenerTransaccionVista = async (req, res) => {
 
 const formularioNuevaTransaccion = async (req, res) => {
     try {
-        // Buscamos todas las tiendas en la base de datos de Mongo
         const tiendas = await Tienda.find({ estado: "Activo" }).lean();
         
-        // Pasamos la variable "tiendas" a la vista de Pug
         res.render("transacciones/form", { tiendas });
     } catch (error) {
         res.status(500).send("Error al cargar el formulario");

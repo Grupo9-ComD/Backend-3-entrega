@@ -66,32 +66,27 @@ const validateUsuarioUpdate = (req, res, next) => {
     next();
 };
 
-// GET ALL
-
 router.get("/login-vista", mostrarLogin);
 router.post("/login-vista", procesarLoginVista);
 router.get("/logout-vista", logoutVista);
 
 
-//router.get("/", obtenerUsuarios);
 router.get("/", verificarToken, verificarRol(["Administrador", "Supervisor"]), obtenerUsuarios); 
-//router.get("/vista", obtenerUsuariosVista);
+
 router.get("/vista", verificarToken, verificarRol(["Administrador", "Supervisor"]), obtenerUsuariosVista);
 
 router.get("/nuevo", verificarToken, verificarRol(["Administrador"]), formularioNuevoUsuario);
-// GET BY ID
+
 router.get("/:id", verificarToken, verificarRol(["Administrador", "Supervisor"]), validateIdParam, obtenerUsuarioPorId);
 
-// CREATE
+
 router.post("/", verificarToken, verificarRol(["Administrador"]), validateUsuarioCreate, crearUsuario);
 router.post("/vista", verificarToken, verificarRol(["Administrador"]), validateUsuarioCreate, crearUsuarioVista);
 router.post("/login", loginUsuario);
 router.post("/logout", logoutApi);
 
-// UPDATE
 router.put("/:id", verificarToken, verificarRol(["Administrador"]), validateIdParam, validateUsuarioUpdate, actualizarUsuario);
 
-// DELETE (baja lógica)
 router.delete("/:id", verificarToken, verificarRol(["Administrador"]), validateIdParam, eliminarUsuario);
 
 

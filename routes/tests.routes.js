@@ -5,7 +5,6 @@ import verificarRol from "../middlewares/role.middleware.js";
 
 const router = express.Router();
 
-// Ruta protegida solo para Administradores
 router.get("/health", verificarToken, verificarRol(["Administrador"]), ejecutarTestsVista);
 
 export default router;

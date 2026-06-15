@@ -10,7 +10,7 @@ import verificarRol from "../middlewares/role.middleware.js";
 
 const router = express.Router();
 
-// Validar ID
+
 const isValidObjectIdString = (value) => typeof value === "string" && /^[a-fA-F0-9]{24}$/.test(value);
 const validateIdParam = (req, res, next) => {
     if (!isValidObjectIdString(req.params.id)) {

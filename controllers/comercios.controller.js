@@ -4,17 +4,16 @@ import Comercio from "../models/comercio.model.js";
 // RUTAS API CRUD CON MONGODB
 // ==========================================
 
-// GET ALL: Buscar todos los comercios
 const obtenerComercios = async (req, res) => {
     try {
-        const comercios = await Comercio.find(); // Reemplaza la lectura del JSON
+        const comercios = await Comercio.find();
         res.json(comercios);
     } catch (error) {
         res.status(500).json({ error: "Error al obtener los comercios" });
     }
 };
 
-// GET BY ID: Buscar por ID generado por Mongo
+
 const obtenerComercioPorId = async (req, res) => {
     try {
         const comercio = await Comercio.findById(req.params.id);
@@ -28,7 +27,7 @@ const obtenerComercioPorId = async (req, res) => {
     }
 };
 
-// CREATE: Guardar un nuevo comercio en la BD
+
 const crearComercio = async (req, res) => {
     try {
         const nuevoComercio = new Comercio(req.body);
@@ -39,7 +38,7 @@ const crearComercio = async (req, res) => {
     }
 };
 
-// UPDATE: Actualizar un comercio
+
 const actualizarComercio = async (req, res) => {
     try {
         const comercioActualizado = await Comercio.findByIdAndUpdate(
@@ -57,7 +56,7 @@ const actualizarComercio = async (req, res) => {
     }
 };
 
-// DELETE: Baja Lógica (Tal como indicaron en su documentación)
+
 const eliminarComercio = async (req, res) => {
     try {
         const comercioEliminado = await Comercio.findByIdAndUpdate(
@@ -106,7 +105,6 @@ const crearComercioVista = async (req, res) => {
 };
 
 
-// GET BY ID (PARA LA VISTA)
 const obtenerComercioVista = async (req, res) => {
     try {
         // Usamos findById y .lean() para pasar los datos limpios a Pug
@@ -114,7 +112,7 @@ const obtenerComercioVista = async (req, res) => {
         if (!comercio) {
             return res.status(404).send("Comercio no encontrado");
         }
-        // Asumiendo que tenías una vista individual, por ejemplo 'detail' o 'view'
+        
         res.render("comercios/detail", { comercio }); 
     } catch (error) {
         res.status(500).send("Error al cargar la vista del comercio");
@@ -128,7 +126,7 @@ export {
     actualizarComercio,
     eliminarComercio,
     obtenerComerciosVista,
-    obtenerComercioVista,     // <-- ¡Acá está la que pedía tu archivo de rutas!
+    obtenerComercioVista,
     formularioNuevoComercio,
     crearComercioVista
 };
