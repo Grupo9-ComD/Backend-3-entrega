@@ -172,7 +172,7 @@ const procesarLoginVista = async (req, res) => {
         });
 
         // 5. Redirigimos al panel de usuarios
-        res.redirect("/usuarios/vista");
+        res.redirect("/");
 
     } catch (error) {
         res.render("usuarios/login", {
