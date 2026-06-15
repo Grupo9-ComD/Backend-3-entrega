@@ -96,7 +96,6 @@ const validateComercioUpdate = (req, res, next) => {
 // ==========================================
 // RUTAS PARA LAS VISTAS PUG (Front-end)
 // ==========================================
-// Lectura y creación: Permitimos el acceso a los 3 roles para operar libremente.
 router.get("/vista", verificarToken, verificarRol(["Administrador", "Supervisor", "Operador"]), obtenerComerciosVista);
 router.get("/nuevo", verificarToken, verificarRol(["Administrador", "Supervisor", "Operador"]), formularioNuevoComercio);
 router.get("/vista/:id", verificarToken, verificarRol(["Administrador", "Supervisor", "Operador"]), validateIdParam, obtenerComercioVista);
@@ -105,11 +104,9 @@ router.post("/vista", verificarToken, verificarRol(["Administrador", "Supervisor
 // ==========================================
 // RUTAS API REST (Endpoints para Thunder Client)
 // ==========================================
-// LECTURA (GET): Todos los roles pueden consultar el listado y el detalle.
 router.get("/", verificarToken, verificarRol(["Administrador", "Supervisor", "Operador"]), obtenerComercios);
 router.get("/:id", verificarToken, verificarRol(["Administrador", "Supervisor", "Operador"]), validateIdParam, obtenerComercioPorId);
 
-// CREACIÓN (POST): Todos los roles pueden dar de alta un comercio nuevo.
 router.post("/", verificarToken, verificarRol(["Administrador", "Supervisor", "Operador"]), validateComercioCreate, crearComercio);
 
 // ACTUALIZACIÓN (PUT): Nivel de seguridad medio. Un Operador no debería cambiar datos sensibles de un comercio (como el CUIT o comisiones), por lo que lo limitamos a Supervisores y Administradores.

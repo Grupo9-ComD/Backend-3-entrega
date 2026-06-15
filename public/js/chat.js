@@ -8,7 +8,7 @@ if (messages) {
 
     const socket = io();
 
-    // Función auxiliar para formatear la fecha
+   
     function formatearFecha(fechaInput) {
         if (!fechaInput) return "";
         const date = new Date(fechaInput);
@@ -21,7 +21,7 @@ if (messages) {
             minute: '2-digit',
             hour12: false 
         };
-        return date.toLocaleString('es-AR', opciones); // Ajusta a tu configuración regional
+        return date.toLocaleString('es-AR', opciones);
     }
 
     function bajarScroll() {
@@ -37,11 +37,10 @@ if (messages) {
         }
     });
 
-    // Función para crear la estructura HTML del mensaje
+    
     function crearElementoMensaje(m) {
         const li = document.createElement("li");
         
-        // Formateamos la fecha que venga de la base de datos (o la actual si no viene)
         const horaFormateada = formatearFecha(m.createdAt || m.fecha || new Date());
 
         li.innerHTML = `

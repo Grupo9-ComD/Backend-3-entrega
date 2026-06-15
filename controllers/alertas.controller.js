@@ -7,7 +7,6 @@ const obtenerAlertasVista = async (req, res) => {
     try {
         const alertas = await Alerta.find().populate("transaccion_id").sort({ fecha: -1 }).lean();
         
-        // Count for dashboard
         const pendientes = alertas.filter(a => a.estado === 'Pendiente').length;
         const resueltas = alertas.filter(a => a.estado === 'Resuelta').length;
         const financieras = alertas.filter(a => a.tipo === 'Financiera').length;

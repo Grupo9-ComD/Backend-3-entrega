@@ -5,7 +5,6 @@ import Transaccion from "../models/transaccion.model.js"; // Lo importamos para 
 // RUTAS API CRUD CON MONGODB
 // ==========================================
 
-// GET ALL
 const obtenerEnvios = async (req, res) => {
     try {
         const envios = await Logistica.find();
@@ -15,7 +14,7 @@ const obtenerEnvios = async (req, res) => {
     }
 };
 
-// GET BY ID
+
 const obtenerEnvioPorId = async (req, res) => {
     try {
         const envio = await Logistica.findById(req.params.id);
@@ -29,44 +28,38 @@ const obtenerEnvioPorId = async (req, res) => {
     }
 };
 
-// CREATE
+
 const crearEnvio = async (req, res) => {
     try {
         const { transaccion_id, empresa_transporte, direccion_destino } = req.body;
 
-        // Validamos que la transacción a la que se asocia el envío exista realmente en Mongo
         const transaccionAsociada = await Transaccion.findById(transaccion_id);
         if (!transaccionAsociada) {
             return res.status(404).json({ error: "La transacción indicada no existe." });
         }
 
-        //validamos que la transaccion no este anulada
         if (transaccionAsociada.estado_conciliacion === "Anulada") {
             return res.status(400).json({ error: "No se puede crear un envío para una transacción anulada." });
         }
 
-        // Validar que el pago esté aprobado antes de despachar
         if (transaccionAsociada.estado_pago !== "Aprobado") {
             return res.status(400).json({ error: `No se puede crear un envío para una transacción con estado de pago "${transaccionAsociada.estado_pago}". Solo se despachan transacciones aprobadas.` });
         }
 
-        // Si todo está bien, creamos el nuevo envío
         const nuevoEnvio = new Logistica({
             transaccion_id: transaccionAsociada._id,
             empresa_transporte,
             direccion_destino
-            // Recordá que estado_envio se pone automáticamente en "En preparación" gracias al Esquema
         });
 
         await nuevoEnvio.save();
         res.status(201).json(nuevoEnvio);
     } catch (error) {
-        console.error(error); // Para debug en consola
+        console.error(error);
         res.status(400).json({ error: "Error al crear el envío. Verificá los datos." });
     }
 };
 
-// UPDATE
 const actualizarEnvio = async (req, res) => {
     try {
         const envioActualizado = await Logistica.findByIdAndUpdate(
@@ -84,7 +77,6 @@ const actualizarEnvio = async (req, res) => {
     }
 };
 
-// DELETE (Baja lógica / Cancelación)
 const eliminarEnvio = async (req, res) => {
     try {
         const envioCancelado = await Logistica.findByIdAndUpdate(
@@ -128,7 +120,6 @@ const obtenerEnvioVista = async (req, res) => {
 
 const formularioNuevoEnvio = async (req, res) => {
     try {
-        // Traemos las transacciones para que el usuario pueda elegir en un <select>
         const transacciones = await Transaccion.find({ 
             estado_conciliacion: { $ne: "Anulada" } 
         }).lean();
@@ -142,18 +133,15 @@ const crearEnvioVista = async (req, res) => {
    try {
       const { transaccion_id, empresa_transporte, direccion_destino } = req.body;
 
-      // Validar que la transacción exista (mismo control que la API)
       const transaccionAsociada = await Transaccion.findById(transaccion_id);
       if (!transaccionAsociada) {
           return res.status(404).send("La transacción indicada no existe.");
       }
 
-      // Validar que no esté anulada
       if (transaccionAsociada.estado_conciliacion === "Anulada") {
           return res.status(400).send("No se puede crear un envío para una transacción anulada.");
       }
 
-      // Validar que el pago esté aprobado
       if (transaccionAsociada.estado_pago !== "Aprobado") {
           return res.status(400).send(`No se puede despachar una transacción con estado de pago "${transaccionAsociada.estado_pago}".`);
       }

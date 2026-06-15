@@ -7,7 +7,6 @@ import { Server } from "socket.io";
 import Mensaje from "./models/message.model.js";
 
 
-// 1. Agregamos las importaciones para manejar rutas absolutas en ES Modules
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -91,11 +90,10 @@ io.on("connection", (socket) => {
 
 
 
-// 2. Recreamos la variable __dirname para que funcione con import/export
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// IMPORTACIÓN DE RUTAS (¡Ahora con ES Modules y extensión .js!)
+// IMPORTACIÓN DE RUTAS
 import comerciosRoutes from "./routes/comercios.routes.js";
 import tiendasRoutes from "./routes/tiendas.routes.js";
 import transaccionesRoutes from "./routes/transacciones.routes.js";
@@ -116,13 +114,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-// 3. AGREGADO CLAVE: Middleware para cargar CSS, JS frontend e imágenes
 app.use(express.static(path.join(__dirname, "public")));
 
 // MIDDLEWARE PERSONALIZADO 1: Request Logger
 app.use((req, res, next) => {
     console.log(`[LOG] Petición recibida: ${req.method} a la ruta ${req.url}`);
-    next(); // Fundamental para que pase a la ruta correspondiente
+    next();
 });
 
 // MIDDLEWARE GLOBAL: Cargar datos del usuario en res.locals para Pug
@@ -141,7 +138,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// CONFIGURACIÓN DE PUG (usando __dirname por seguridad)
+// CONFIGURACIÓN DE PUG 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
