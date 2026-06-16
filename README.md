@@ -39,6 +39,8 @@ Si deseas correr este proyecto en un entorno de desarrollo local, sigue estos pa
    npm install
 Variables de Entorno: Crea un archivo llamado .env en la raíz del proyecto y configura tus credenciales seguras de la siguiente forma:
 Levanta el servidor de desarrollo ejecutando:
+ El servidor estará corriendo en http://localhost:8000. Puedes visualizar la interfaz gráfica en tu navegador o probar los endpoints de la API utilizando Thunder Client o Postman.
+ 
 🧪 Ejecución de Pruebas (Testing)
 Para correr la suite de pruebas unitarias sobre los módulos de seguridad de la API, ejecuta en la terminal:
 npm test
