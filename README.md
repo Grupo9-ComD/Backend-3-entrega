@@ -1,42 +1,45 @@
-# TechRetail Solutions - Backend B2B 🛒
+### TechRetail Solutions - Backend B2B 🛒
+Este repositorio contiene el código fuente del backend (Producto Mínimo Viable - MVP) para la plataforma de e-commerce autogestionada enfocada en el entorno B2B  **TechRetail Solutions** . El sistema permite a los comercios crear sus propias tiendas online, integrando el registro de transacciones, logística, reportes estadísticos y un panel de alertas.
 
-Este repositorio contiene el código fuente del backend (Producto Mínimo Viable - MVP) para la plataforma de e-commerce autogestionada enfocada en el entorno B2B **TechRetail Solutions**. El sistema permite a los comercios crear sus propias tiendas online, integrando el registro de transacciones, logística, reportes estadísticos y un panel de alertas.
-
-## 👥 Equipo de Desarrollo: DeveloPET Friendly (Grupo 9)
-
-*   **Guillermo Sciulli:** Reestructuración de la arquitectura a ES Modules, despliegue del servidor en la nube (Render), implementación de Testing automatizado nativo (`node:test`) y desarrollo del controlador de Estadísticas y Alertas.
-*   **Mailén Juárez:** Migración de los módulos de Comercios y Tiendas a esquemas de Mongoose, implementando validaciones estrictas y controladores asincrónicos.
-*   **Verónica Greco:** Adaptación de los módulos interconectados de Transacciones y Logística a MongoDB, desarrollando la lógica relacional mediante ObjectIds (`_id`).
-*   **Braian Perea:** Desarrollo del módulo de Usuarios con esquemas de Mongoose y adaptación del motor de plantillas Pug para el renderizado de vistas dinámicas y dashboards.
+#### 👥 Equipo de Desarrollo: DeveloPET Friendly (Grupo 9)
+*   **Guillermo Sciulli:**  Reestructuración de la arquitectura a ES Modules, despliegue del servidor en la nube (Render), implementación de Testing automatizado nativo (node:test) y desarrollo del controlador de Estadísticas y Alertas.
+*   **Mailén Juárez:**  Migración de los módulos de Comercios y Tiendas a esquemas de Mongoose, implementando validaciones estrictas y controladores asincrónicos.
+*   **Verónica Greco:**  Adaptación de los módulos interconectados de Transacciones y Logística a MongoDB, desarrollando la lógica relacional mediante ObjectIds (_id).
+*   **Braian Perea:**  Desarrollo del módulo de Usuarios con esquemas de Mongoose y adaptación del motor de plantillas Pug para el renderizado de vistas dinámicas y dashboards.
 
 ---
 
-## 🚀 Estado Actual (3° Entrega - Versión Final)
+#### 🚀 Estado Actual (3° Entrega - Versión Final)
+El proyecto cuenta con un backend 100% funcional estructurado bajo el  **Patrón de Diseño MVC**  (Modelos, Vistas y Controladores). El código está modernizado utilizando ES Modules (import/export) y maneja la concurrencia mediante promesas y async/await.
 
-El proyecto cuenta con un backend 100% funcional estructurado bajo el **Patrón de Diseño MVC** (Modelos, Vistas y Controladores). El código está modernizado utilizando ES Modules (`import/export`) y maneja la concurrencia mediante promesas y `async/await`.
+##### ✨ Nuevas Funcionalidades Implementadas (Tercera Entrega)
+*  🔐  **Seguridad y Autenticación (JWT & RBAC):**  Se implementó un sistema de inicio de sesión seguro utilizando JSON Web Tokens (JWT) almacenados en  *cookies* . Se desarrollaron middlewares de protección de rutas (auth.middleware.js) y un  **Control de Acceso Basado en Roles**  (role.middleware.js) que restringe operaciones críticas según la jerarquía del empleado (Administrador, Supervisor u Operador).
+*  ☁️  **Despliegue en la Nube (Deployment):**  La base de datos fue migrada exitosamente a  **MongoDB Atlas** . Además, el servidor fue configurado y publicado en la plataforma  **Render** , haciendo que la API REST esté accesible de forma pública en internet.
+*  🚨  **Panel de Alertas (Interoperabilidad):**  Nuevo dashboard visual interactivo desarrollado en Pug que notifica discrepancias financieras y problemas operativos. Utiliza el método .populate() de Mongoose para cruzar y mostrar los montos exactos de las transacciones afectadas.
+*  🧪  **Testing Automatizado:**  Se incorporaron pruebas unitarias automatizadas utilizando el motor nativo de Node.js (node:test y node:assert) para validar la robustez de los middlewares de seguridad y roles (RBAC) aislando componentes (Mocking).
+*  💬  **Chat Interno en Tiempo Real (Socket.io):**  Se integró un sistema de mensajería instantánea para la comunicación interna del equipo operativo utilizando WebSockets (socket.io). Cuenta con un middleware de autenticación por socket que valida el token JWT, persistencia del historial en MongoDB (esquema con autogeneración de marcas de tiempo), carga optimizada de los últimos 30 mensajes, visualización de fecha/hora formateada y scroll automático inteligente al abrir o recibir mensajes.
 
-### ✨ Nuevas Funcionalidades Implementadas (Tercera Entrega)
-
-*   🔐 **Seguridad y Autenticación (JWT & RBAC):** Se implementó un sistema de inicio de sesión seguro utilizando JSON Web Tokens (JWT) almacenados en *cookies*. Se desarrollaron middlewares de protección de rutas (`auth.middleware.js`) y un **Control de Acceso Basado en Roles** (`role.middleware.js`) que restringe operaciones críticas según la jerarquía del empleado (Administrador, Supervisor u Operador).
-*   ☁️ **Despliegue en la Nube (Deployment):** La base de datos fue migrada exitosamente a **MongoDB Atlas**. Además, el servidor fue configurado y publicado en la plataforma **Render**, haciendo que la API REST esté accesible de forma pública en internet.
-*   🚨 **Panel de Alertas (Interoperabilidad):** Nuevo dashboard visual interactivo desarrollado en Pug que notifica discrepancias financieras y problemas operativos. Utiliza el método `.populate()` de Mongoose para cruzar y mostrar los montos exactos de las transacciones afectadas.
-*   🧪 **Testing Automatizado:** Se incorporaron pruebas unitarias automatizadas utilizando el motor nativo de Node.js (`node:test` y `node:assert`) para validar la robustez de los middlewares de seguridad y roles (RBAC) aislando componentes (Mocking).
-*   💬 **Chat Interno en Tiempo Real (Socket.io):** Se integró un sistema de mensajería instantánea para la comunicación interna del equipo operativo utilizando WebSockets (`socket.io`). Cuenta con un middleware de autenticación por socket que valida el token JWT, persistencia del historial en MongoDB (esquema con autogeneración de marcas de tiempo), carga optimizada de los últimos 30 mensajes, visualización de fecha/hora formateada y scroll automático inteligente al abrir o recibir mensajes.
+##### 📦 Módulos y Funcionalidades (CRUD completo)
+*   **Comercios y Tiendas:**  Gestión de empresas B2B y sus sucursales virtuales, con validación de dependencias.
+*   **Transacciones (Ventas):**  Procesamiento de ventas y registro del estado de conciliación financiera (Monto Real vs Pasarela).
+*   **Logística:**  Generación de envíos vinculados de manera relacional al identificador de la transacción que le dio origen.
+*   **Usuarios:**  Módulo de gestión de personal con contraseñas encriptadas.
+*   **Estadísticas:**  Generación de Reporte "Hot Sale" de alto rendimiento que calcula en tiempo real el volumen de ventas y el "Split de pagos".
+*   **Alertas:**  Monitoreo visual de la salud financiera del sistema mediante tickets de resolución por prioridades.
+*   **Chat Interno:**  Canal de comunicación en tiempo real seguro y exclusivo para personal autenticado, accesible mediante un widget y botón flotante interactivo en todo el panel.
 
 ---
 
-## 🛠️ Instrucciones de Instalación y Ejecución Local
-
+#### 🛠️ Instrucciones de Instalación y Ejecución Local
 Si deseas correr este proyecto en un entorno de desarrollo local, sigue estos pasos:
 
 1. Clona este repositorio en tu computadora.
-2. Abre la terminal posicionado en la carpeta raíz del proyecto y ejecuta el siguiente comando para instalar todas las dependencias necesarias (`express`, `mongoose`, `jsonwebtoken`, `bcrypt`, `pug`, `socket.io`, etc.):
+2. Abre la terminal posicionado en la carpeta raíz del proyecto y ejecuta el siguiente comando para instalar todas las dependencias necesarias (express, mongoose, jsonwebtoken, bcrypt, pug, socket.io, etc.):
    ```bash
    npm install
 Variables de Entorno: Crea un archivo llamado .env en la raíz del proyecto y configura tus credenciales seguras de la siguiente forma:
-Levanta el servidor de desarrollo (con recarga automática de Nodemon) ejecutando:
-El servidor estará corriendo en http://localhost:8000. Puedes visualizar la interfaz gráfica y el chat en tiempo real en tu navegador o probar los endpoints de la API utilizando Thunder Client o Postman.
+Levanta el servidor de desarrollo ejecutando:
 🧪 Ejecución de Pruebas (Testing)
 Para correr la suite de pruebas unitarias sobre los módulos de seguridad de la API, ejecuta en la terminal:
 npm test
-El motor nativo de Node.js evaluará los casos de prueba simulados y devolverá el reporte en la consola.
+El motor nativo de Node.js evaluará los casos de prueba simulados y devolverá el reporte de cobertura en la consola.
