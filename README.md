@@ -23,16 +23,6 @@ El proyecto cuenta con un backend 100% funcional estructurado bajo el **Patrón 
 *   🧪 **Testing Automatizado:** Se incorporaron pruebas unitarias automatizadas utilizando el motor nativo de Node.js (`node:test` y `node:assert`) para validar la robustez de los middlewares de seguridad y roles (RBAC) aislando componentes (Mocking).
 *   💬 **Chat Interno en Tiempo Real (Socket.io):** Se integró un sistema de mensajería instantánea para la comunicación interna del equipo operativo utilizando WebSockets (`socket.io`). Cuenta con un middleware de autenticación por socket que valida el token JWT, persistencia del historial en MongoDB (esquema con autogeneración de marcas de tiempo), carga optimizada de los últimos 30 mensajes, visualización de fecha/hora formateada y scroll automático inteligente al abrir o recibir mensajes.
 
-### 📦 Módulos y Funcionalidades (CRUD completo)
-
-*   **Comercios y Tiendas:** Gestión de empresas B2B y sus sucursales virtuales, con validación de dependencias.
-*   **Transacciones (Ventas):** Procesamiento de ventas y registro del estado de conciliación financiera (Monto Real vs Pasarela).
-*   **Logística:** Generación de envíos vinculados de manera relacional al identificador de la transacción que le dio origen.
-*   **Usuarios:** Módulo de gestión de personal con contraseñas encriptadas.
-*   **Estadísticas:** Generación de Reporte "Hot Sale" de alto rendimiento que calcula en tiempo real el volumen de ventas y el "Split de pagos".
-*   **Alertas:** Monitoreo visual de la salud financiera del sistema mediante tickets de resolución por prioridades.
-*   **Chat Interno:** Canal de comunicación en tiempo real seguro y exclusivo para personal autenticado, accesible mediante un widget y botón flotante interactivo en todo el panel.
-
 ---
 
 ## 🛠️ Instrucciones de Instalación y Ejecución Local
@@ -40,17 +30,13 @@ El proyecto cuenta con un backend 100% funcional estructurado bajo el **Patrón 
 Si deseas correr este proyecto en un entorno de desarrollo local, sigue estos pasos:
 
 1. Clona este repositorio en tu computadora.
-2. Abre la terminal posicionado en la carpeta raíz del proyecto y ejecuta el siguiente comando para instalar todas las dependencias necesarias (`express`, `mongoose`, `jsonwebtoken`, `bcrypt`, `pug`, etc.):
+2. Abre la terminal posicionado en la carpeta raíz del proyecto y ejecuta el siguiente comando para instalar todas las dependencias necesarias (`express`, `mongoose`, `jsonwebtoken`, `bcrypt`, `pug`, `socket.io`, etc.):
    ```bash
    npm install
-
-    Variables de Entorno: Crea un archivo llamado .env en la raíz del proyecto y configura tus credenciales:
-    Levanta el servidor de desarrollo (con recarga automática de Nodemon) ejecutando:
-    El servidor estará corriendo en http://localhost:8000. Puedes visualizar la interfaz gráfica en tu navegador o probar los endpoints de la API utilizando Thunder Client o Postman.
-
+Variables de Entorno: Crea un archivo llamado .env en la raíz del proyecto y configura tus credenciales seguras de la siguiente forma:
+Levanta el servidor de desarrollo (con recarga automática de Nodemon) ejecutando:
+El servidor estará corriendo en http://localhost:8000. Puedes visualizar la interfaz gráfica y el chat en tiempo real en tu navegador o probar los endpoints de la API utilizando Thunder Client o Postman.
 🧪 Ejecución de Pruebas (Testing)
 Para correr la suite de pruebas unitarias sobre los módulos de seguridad de la API, ejecuta en la terminal:
-
 npm test
-
-El motor nativo de Node.js evaluará los casos de prueba simulados y devolverá el reporte de cobertura en la consola.
+El motor nativo de Node.js evaluará los casos de prueba simulados y devolverá el reporte en la consola.
