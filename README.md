@@ -30,16 +30,29 @@ El proyecto cuenta con un backend 100% funcional estructurado bajo el  **Patrón
 
 ---
 
-#### 🛠️ Instrucciones de Instalación y Ejecución Local
-Si deseas correr este proyecto en un entorno de desarrollo local, sigue estos pasos:
+### 🛠️ Instalación de Dependencias
 
-1. Clona este repositorio en tu computadora.
-2. Abre la terminal posicionado en la carpeta raíz del proyecto y ejecuta el siguiente comando para instalar todas las dependencias necesarias (express, mongoose, jsonwebtoken, bcrypt, pug, socket.io, etc.):
-   ```bash
-   npm install
-Variables de Entorno: Crea un archivo llamado .env en la raíz del proyecto y configura tus credenciales seguras de la siguiente forma:
-Levanta el servidor de desarrollo ejecutando:
- El servidor estará corriendo en http://localhost:8000. Puedes visualizar la interfaz gráfica en tu navegador o probar los endpoints de la API utilizando Thunder Client o Postman.
+Una vez clonado el repositorio, abre la terminal posicionado en la carpeta raíz del proyecto y ejecuta el siguiente comando para instalar todas las dependencias necesarias para producción:
+
+npm install express mongoose jsonwebtoken bcrypt pug socket.io dotenv
+
+**Detalle de los paquetes principales:**
+*   **express:** Framework principal para levantar el servidor y manejar el enrutamiento de la API.
+*   **mongoose:** ODM utilizado para modelar de forma estricta los datos y establecer la conexión con MongoDB Atlas.
+*   **jsonwebtoken:** Herramienta para la generación y validación de tokens de seguridad (Autenticación *stateless*).
+*   **bcrypt:** Librería utilizada para la encriptación unidireccional y segura de las contraseñas de los usuarios.
+*   **pug:** Motor de plantillas integrado para renderizar las vistas dinámicas generadas desde el servidor (como el Panel de Alertas).
+*   **socket.io:** Librería que habilita los WebSockets para la comunicación bidireccional en tiempo real de nuestro Chat Interno.
+*   **dotenv:** Módulo para cargar y proteger las variables de entorno locales (como la URI de la base de datos y la clave secreta de JWT).
+
+#### Dependencias de Desarrollo (Opcional)
+Para trabajar en el entorno local con recarga automática ante cada cambio en el código, instala `nodemon` como dependencia de desarrollo ejecutando:
+
+npm install nodemon --save-dev
+
+*(Nota sobre Testing: El proyecto utiliza el motor nativo de Node.js (`node:test`) para las pruebas automatizadas, demostrando una arquitectura sólida que previene el overengineering. Por lo tanto, **no es necesario** instalar librerías externas de testing como Jest)*.
+
+El servidor estará corriendo en http://localhost:8000. Puedes visualizar la interfaz gráfica en tu navegador o probar los endpoints de la API utilizando Thunder Client o Postman.
  
 🧪 Ejecución de Pruebas (Testing)
 Para correr la suite de pruebas unitarias sobre los módulos de seguridad de la API, ejecuta en la terminal:
