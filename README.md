@@ -2,10 +2,10 @@
 Este repositorio contiene el código fuente del backend (Producto Mínimo Viable - MVP) para la plataforma de e-commerce autogestionada enfocada en el entorno B2B  **TechRetail Solutions** . El sistema permite a los comercios crear sus propias tiendas online, integrando el registro de transacciones, logística, reportes estadísticos y un panel de alertas.
 
 #### 👥 Equipo de Desarrollo: DeveloPET Friendly (Grupo 9)
-*   **Guillermo Sciulli:**  Reestructuración de la arquitectura a ES Modules, despliegue del servidor en la nube (Render), implementación de Testing automatizado nativo (node:test) y desarrollo del controlador de Estadísticas y Alertas.
-*   **Mailén Juárez:**  Migración de los módulos de Comercios y Tiendas a esquemas de Mongoose, implementando validaciones estrictas y controladores asincrónicos.
-*   **Verónica Greco:**  Adaptación de los módulos interconectados de Transacciones y Logística a MongoDB, desarrollando la lógica relacional mediante ObjectIds (_id).
-*   **Braian Perea:**  Desarrollo del módulo de Usuarios con esquemas de Mongoose y adaptación del motor de plantillas Pug para el renderizado de vistas dinámicas y dashboards.
+*   **Guillermo Sciulli:** Reestructuración de la arquitectura general a ES Modules, ejecución del despliegue del servidor en la plataforma en la nube (Render), e implementación de la suite de pruebas unitarias (Testing automatizado) nativo (node:test).
+*   **Mailén Juárez:** Migración definitiva a MongoDB Atlas de los módulos de Comercios y Tiendas, implementando esquemas estrictos de Mongoose y refactorizando controladores para un manejo asincrónico eficiente.
+*   **Verónica Greco:** Desarrollo e implementación del Chat Interno en tiempo real utilizando WebSockets (socket.io). Además, consolidación de la lógica relacional entre los módulos de Transacciones y Logística.
+*   **Braian Perea:** Encargado de la implementación de la seguridad stateless con middlewares JWT y Control de Acceso Basado en Roles (RBAC). Además, adaptó el motor de plantillas Pug para el renderizado de vistas dinámicas y dashboards.
 
 ---
 
