@@ -9,7 +9,7 @@ Este repositorio contiene el código fuente del backend (Producto Mínimo Viable
 
 ---
 
-#### 🚀 Estado Actual (3° Entrega - Versión Final)
+#### 🚀 Estado Actual - 3° Entrega -  (Versión 1.1.0)
 El proyecto cuenta con un backend 100% funcional estructurado bajo el  **Patrón de Diseño MVC**  (Modelos, Vistas y Controladores). El código está modernizado utilizando ES Modules (import/export) y maneja la concurrencia mediante promesas y async/await.
 
 ##### ✨ Nuevas Funcionalidades Implementadas (Tercera Entrega)
